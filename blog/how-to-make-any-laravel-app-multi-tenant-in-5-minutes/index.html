@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="description" content="Blog about web development">
+
+        <meta property="og:title" content="How to make any Laravel application multi-tenant in 5 minutes | Samuel Štancl"/>
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://stancl.github.io/blog/how-to-make-any-laravel-app-multi-tenant-in-5-minutes"/>
+        <meta property="og:description" content="Blog about web development" />
+
+        <title>How to make any Laravel application multi-tenant in 5 minutes | Samuel Štancl</title>
+
+        <link rel="home" href="https://stancl.github.io">
+        <link rel="icon" href="/favicon.ico">
+        <link href="/blog/feed.atom" type="application/atom+xml" rel="alternate" title="Samuel Štancl Atom Feed">
+
+            <meta property="og:title" content="How to make any Laravel application multi-tenant in 5 minutes" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://stancl.github.io/blog/how-to-make-any-laravel-app-multi-tenant-in-5-minutes"/>
+    <meta property="og:description" content="How to make any Laravel app multi-tenant without changing its source code." />
+
+                    <!-- Insert analytics code here -->
+        
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,300i,400,400i,700,700i,800,800i" rel="stylesheet">
+        <link rel="stylesheet" href="/assets/build/css/main.css?id=5e889d55585b7f292ee3">
+    </head>
+
+    <body class="flex flex-col justify-between min-h-screen bg-grey-lightest text-grey-darkest leading-normal font-sans">
+        <header class="flex items-center shadow bg-white border-b h-16 py-4" role="banner">
+            <div class="container flex items-center max-w-4xl mx-auto px-4 lg:px-8">
+                <div class="flex items-center">
+                    <a href="/" title="Samuel Štancl blog" class="inline-flex items-center">
+                        
+
+                        <h1 class="text-xl text-blue-darkest font-semibold hover:text-blue-dark my-0">Samuel Štancl</h1>
+                    </a>
+                </div>
+
+                <div id="vue-search" class="flex flex-1 justify-end items-center">
+                    <search></search>
+
+                    <nav class="hidden lg:flex items-center justify-end text-lg">
+    <a title="Samuel Štancl Blog" href="/blog"
+        class="ml-6 text-grey-darker hover:text-blue-dark ">
+        Blog
+    </a>
+
+    <a title="Samuel Štancl About" href="/about"
+        class="ml-6 text-grey-darker hover:text-blue-dark ">
+        About
+    </a>
+
+    <a title="Samuel Štancl Contact" href="/contact"
+        class="ml-6 text-grey-darker hover:text-blue-dark ">
+        Contact
+    </a>
+</nav>
+
+                    <button class="flex justify-center items-center bg-blue border border-blue h-10 px-5 rounded-full lg:hidden focus:outline-none"
+    onclick="navMenu.toggle()"
+>
+    <svg id="js-nav-menu-show" xmlns="http://www.w3.org/2000/svg"
+        class="fill-current text-white h-9 w-4" viewBox="0 0 32 32"
+    >
+        <path d="M4,10h24c1.104,0,2-0.896,2-2s-0.896-2-2-2H4C2.896,6,2,6.896,2,8S2.896,10,4,10z M28,14H4c-1.104,0-2,0.896-2,2  s0.896,2,2,2h24c1.104,0,2-0.896,2-2S29.104,14,28,14z M28,22H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h24c1.104,0,2-0.896,2-2  S29.104,22,28,22z"/>
+    </svg>
+
+    <svg id="js-nav-menu-hide" xmlns="http://www.w3.org/2000/svg"
+        class="hidden fill-current text-white h-9 w-4" viewBox="0 0 36 30"
+    >
+        <polygon points="32.8,4.4 28.6,0.2 18,10.8 7.4,0.2 3.2,4.4 13.8,15 3.2,25.6 7.4,29.8 18,19.2 28.6,29.8 32.8,25.6 22.2,15 "/>
+    </svg>
+</button>
+
+                </div>
+            </div>
+        </header>
+
+        <nav id="js-nav-menu" class="nav-menu hidden lg:hidden">
+    <ul class="list-reset my-0">
+        <li class="pl-4">
+            <a
+                title="Samuel Štancl Blog"
+                href="/blog"
+                class="nav-menu__item hover:text-blue "
+            >Blog</a>
+        </li>
+        <li class="pl-4">
+            <a
+                title="Samuel Štancl About"
+                href="/about"
+                class="nav-menu__item hover:text-blue "
+            >About</a>
+        </li>
+        <li class="pl-4">
+            <a
+                title="Samuel Štancl Contact"
+                href="/contact"
+                class="nav-menu__item hover:text-blue "
+            >Contact</a>
+        </li>
+    </ul>
+</nav>
+
+        <main role="main" class="flex-auto w-full container max-w-xl mx-auto py-16 px-6">
+                
+    <h1 class="leading-none mb-2">How to make any Laravel application multi-tenant in 5 minutes</h1>
+
+    <p class="text-grey-darker text-xl md:mt-0">Samuel Štancl  •  June 29, 2019</p>
+
+                        <a
+                href="/blog/categories/laravel"
+                title="View posts in laravel"
+                class="inline-block bg-grey-light hover:bg-blue-lighter leading-loose tracking-wide text-grey-darkest uppercase text-xs font-semibold rounded mr-4 px-3 pt-px"
+            >laravel</a>
+                    <a
+                href="/blog/categories/multi-tenancy"
+                title="View posts in multi-tenancy"
+                class="inline-block bg-grey-light hover:bg-blue-lighter leading-loose tracking-wide text-grey-darkest uppercase text-xs font-semibold rounded mr-4 px-3 pt-px"
+            >multi-tenancy</a>
+            
+    <div class="border-b border-blue-lighter mb-10 pb-4" v-pre>
+        <p>We will be implementing a multi-database tenancy package of mine, <a href="https://github.com/stancl/tenancy"><code>stancl/tenancy</code></a> into a <a href="https://github.com/milon/laravel-blog">simple Laravel blog example</a> I found on GitHub.</p>
+<p>The main feature of the package is that you don't have to make any changes to your app's code. After it identifies the tenant using the hostname, it automatically configures database, Redis, cache and the filesystem for that tenant.</p>
+<p>This tutorial explains the basics of making an app multi-tenant using this package. For a real-world production application, you should read the <a href="https://github.com/stancl/tenancy">documentation</a>. It's not long.</p>
+<h3>Installing the tenancy package</h3>
+<p>The package supports Laravel 5.7 and 5.8.</p>
+<p>You will also need Redis. If your app uses Redis and you need to separate that data for tenants, use phpredis. If you don't need that, you can use predis.</p>
+<pre><code>composer require stancl/tenancy</code></pre>
+<h3>Adding middleware</h3>
+<p>Open <code>app/Http/Kernel.php</code> and make the <code>Stancl\Tenancy\Middleware\InitializeTenancy</code> middleware top priority, to make sure everything is configured for tenancy before any code is run.</p>
+<pre><code>protected $middlewarePriority = [
+    \Stancl\Tenancy\Middleware\InitializeTenancy::class,
+    // ...
+];</code></pre>
+<h3>Making the routes multi-tenant</h3>
+<p>The package lets you have tenant routes in <code>routes/tenant.php</code> and shared routes in <code>routes/web.php</code>. When someone visits a tenant route, the <code>InitializeMiddleware</code> will configure everything for tenancy. If you have some content you don't want to apply tenany for, such as landing pages, sign up pages, etc, put those into <code>web.php</code>.</p>
+<p>Since we don't have any shared content, we'll just rename <code>routes/web.php</code> to <code>routes/tenant.php</code> and create an empty <code>routes/web.php</code> file.</p>
+<h3>Configuration</h3>
+<p>First you need to publish the configuration file of the package. Run</p>
+<pre><code>php artisan vendor:publish --provider='Stancl\Tenancy\TenancyServiceProvider' --tag=config</code></pre>
+<p>and you should see something along the lines of <code>Copied File [...] to [/config/tenancy.php]</code>.</p>
+<p>This lets us make changes to the configuration file of the tenancy package. I don't want to use MySQL for this simple repository, so I will change the DB driver for the application in <code>.env</code> and for the package in <code>config/tenancy.php</code>:</p>
+<pre><code class="language-php">// .env
+DB_CONNECTION=sqlite
+
+// config/tenancy.php
+'database' =&gt; [
+    'based_on' =&gt; 'sqlite',
+    // ...
+],</code></pre>
+<h4>Making changes to the config</h4>
+<p>If you're using predis, disable Redis tenancy. Predis doesn't support prefixing.</p>
+<pre><code class="language-php">// config/tenancy.php
+'redis' =&gt; [
+    'tenancy' =&gt; false,
+    // ...
+],</code></pre>
+<h3>Creating a Redis connection</h3>
+<p>By default, the package uses Redis as the &quot;central&quot; storage &mdash; for storing data about tenants. Redis is ideal for this thanks to its high performance. You don't really need to use a relational database for this.</p>
+<p>Add this to <code>database.redis</code> config:</p>
+<pre><code class="language-php">'tenancy' =&gt; [
+    'host' =&gt; env('TENANCY_REDIS_HOST', '127.0.0.1'),
+    'password' =&gt; env('TENANCY_REDIS_PASSWORD', null),
+    'port' =&gt; env('TENANCY_REDIS_PORT', 6379),
+    'database' =&gt; env('TENANCY_REDIS_DB', 3),
+],</code></pre>
+<p>Make sure you use a unique <code>database</code> number &mdash; Redis supports 16 databases which let you have multiple applications use the same Redis instance without any conflicts.</p>
+<h3>Creating tenants</h3>
+<p>We'll create two tenants to see that the data separation works correctly. We'll be using <code>php artisan tinker</code> to keep it simple. For your app, you should create a page that does this.</p>
+<p>We'll use these two subdomains:</p>
+<ul>
+<li>tenant1.localhost</li>
+<li>tenant2.localhost</li>
+</ul>
+<p>Anything under the <code>.localhost</code> TLD is automatically redirected to <code>127.0.0.1</code>, so we don't have to make any changes to <code>/etc/hosts</code>.</p>
+<p>Open <code>php artisan tinker</code> and run these two functions:</p>
+<pre><code class="language-php">&gt;&gt;&gt; tenant()-&gt;create('tenant1.localhost')
+=&gt; [
+     "uuid" =&gt; "e5611150-9a9e-11e9-8315-b9eb127de2b8",
+     "domain" =&gt; "tenant1.localhost",
+   ]
+&gt;&gt;&gt; tenant()-&gt;create('tenant2.localhost')
+=&gt; [
+     "uuid" =&gt; "e8002ec0-9a9e-11e9-8095-51e64ce28359",
+     "domain" =&gt; "tenant2.localhost",
+   ]</code></pre>
+<h3>Migrations</h3>
+<p>We'll move all migrations from <code>database/migrations</code> to <code>database/migrations/tenant</code> so that we can run them for our tenants.</p>
+<pre><code class="language-sh">touch database/migrations/tenant
+mv database/migrations/*.php database/migrations/tenant</code></pre>
+<p>Now we run <code>php artisan tenants:migrate</code>:</p>
+<pre><code>php artisan tenants:migrate
+Tenant: e8002ec0-9a9e-11e9-8095-51e64ce28359 (tenant2.localhost)
+Migrating: 2014_10_12_000000_create_users_table
+Migrated:  2014_10_12_000000_create_users_table
+Migrating: 2014_10_12_100000_create_password_resets_table
+Migrated:  2014_10_12_100000_create_password_resets_table
+Migrating: 2017_03_04_131126_create_posts_table
+Migrated:  2017_03_04_131126_create_posts_table
+Migrating: 2017_03_04_131334_create_categories_table
+Migrated:  2017_03_04_131334_create_categories_table
+Migrating: 2017_03_04_131558_create_tags_table
+Migrated:  2017_03_04_131558_create_tags_table
+Migrating: 2017_03_04_131702_create_post_tag_table
+Migrated:  2017_03_04_131702_create_post_tag_table
+Migrating: 2017_03_04_131909_create_comments_table
+Migrated:  2017_03_04_131909_create_comments_table
+Migrating: 2017_03_04_133429_add_columns_to_user
+Migrated:  2017_03_04_133429_add_columns_to_user
+Tenant: e5611150-9a9e-11e9-8315-b9eb127de2b8 (tenant1.localhost)
+Migrating: 2014_10_12_000000_create_users_table
+Migrated:  2014_10_12_000000_create_users_table
+Migrating: 2014_10_12_100000_create_password_resets_table
+Migrated:  2014_10_12_100000_create_password_resets_table
+Migrating: 2017_03_04_131126_create_posts_table
+Migrated:  2017_03_04_131126_create_posts_table
+Migrating: 2017_03_04_131334_create_categories_table
+Migrated:  2017_03_04_131334_create_categories_table
+Migrating: 2017_03_04_131558_create_tags_table
+Migrated:  2017_03_04_131558_create_tags_table
+Migrating: 2017_03_04_131702_create_post_tag_table
+Migrated:  2017_03_04_131702_create_post_tag_table
+Migrating: 2017_03_04_131909_create_comments_table
+Migrated:  2017_03_04_131909_create_comments_table
+Migrating: 2017_03_04_133429_add_columns_to_user
+Migrated:  2017_03_04_133429_add_columns_to_user</code></pre>
+<p><sub>Note: If you're using the same sample blog repository as I chose, you might have to tweak the <code>2017_03_04_133429_add_columns_to_user</code> migration (make the API key nullable). <strong>This is not an issue with the tenancy package but with the blog repository.</strong> I have submitted a PR so by the time you're reading this, this should no longer be an issue.</sub></p>
+<h3>Seeding the database</h3>
+<pre><code>php artisan tenants:seed --class DummyDataSeeder
+Tenant: e8002ec0-9a9e-11e9-8095-51e64ce28359 (tenant2.localhost)
+Database seeding completed successfully.
+Tenant: e5611150-9a9e-11e9-8315-b9eb127de2b8 (tenant1.localhost)
+Database seeding completed successfully.</code></pre>
+<h3>Visiting the sites</h3>
+<p>I didn't want to set up Apache or Nginx just for a simple demonstration, so I used:</p>
+<pre><code>php artisan serve</code></pre>
+<p>Now we can visit the sites. If we visit <code>tenant1.localhost:8000</code> and <code>tenant2.localhost:8000</code>, we can see two same applications, running from the same source code, but with different content.</p>
+<h4>First blog</h4>
+<p><img src="https://i.imgur.com/4r0eyIS.png" alt="First site" /></p>
+<h4>Second blog</h4>
+<p><img src="https://i.imgur.com/nP5aKxV.png" alt="Second site" /></p>
+<h3>Closing</h3>
+<p>My package makes it very easy to implement multi-tenancy into any Laravel application in a way that the application code doesn't have to be aware of any tenancy. The magic is automatically identifying tenants based on the subdomain when a route in the <code>routes/tenant.php</code> file is visited (those routes have the <code>InitializeTenancy</code> middleware <a href="https://github.com/stancl/tenancy/blob/97ec172fd43d90c0d380e25458386ed53e156005/src/TenantRouteServiceProvider.php#L14">applied on them</a>) and then accordingly switching the database and Redis connections and making some changes to the cache and filesystem.</p>
+<p>If you're building a multi-tenant app, I highly recommend using this package. Implementing tenancy on your own can be painful, which is why I created this package &mdash; any Laravel application I make can be made multi-tenant in 5 minutes using this package.</p>
+<p>Thanks for reading. If you have any questions or suggestions about the package, feel free to open Issues on the <a href="https://github.com/stancl/tenancy">GitHub page</a>.</p>    </div>
+
+    <nav class="flex justify-between text-sm md:text-base">
+        <div>
+                    </div>
+
+        <div>
+                    </div>
+    </nav>
+        </main>
+
+        <footer class="bg-white text-center text-sm mt-12 py-4" role="contentinfo">
+            <ul class="flex flex-col md:flex-row justify-center list-reset">
+                <li class="md:mr-2">
+                    &copy; Samuel Štancl 2019.
+                </li>
+
+                <li>
+                    Built with <a href="http://jigsaw.tighten.co" title="Jigsaw by Tighten">Jigsaw</a>
+                    and <a href="https://tailwindcss.com" title="Tailwind CSS, a utility-first CSS framework">Tailwind CSS</a>.
+                </li>
+            </ul>
+        </footer>
+
+        <script src="/assets/build/js/main.js?id=35a1049db33568cdfbc4"></script>
+
+        <script>
+    const navMenu = {
+        toggle() {
+            const menu = document.getElementById('js-nav-menu');
+            menu.classList.toggle('hidden');
+            menu.classList.toggle('lg:block');
+            document.getElementById('js-nav-menu-hide').classList.toggle('hidden');
+            document.getElementById('js-nav-menu-show').classList.toggle('hidden');
+        },
+    }
+</script>
+    </body>
+</html>
